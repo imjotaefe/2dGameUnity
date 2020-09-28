@@ -11,7 +11,6 @@ public class main_camera : MonoBehaviour
         
     }
 
-
     void Update()
     {
         Vector3 posicao = new Vector3(player.transform.position.x, player.transform.position.y + offset_y, -10);

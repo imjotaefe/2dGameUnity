@@ -13,11 +13,11 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - colisao
+  - player
+  - inimigo
+  - chao
+  - gem
   - 
   - 
   - 
