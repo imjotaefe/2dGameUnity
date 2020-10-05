@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class player_controller : MonoBehaviour
 {
@@ -15,27 +16,42 @@ public class player_controller : MonoBehaviour
     public LayerMask groundMask;
     public LayerMask gemMask;
     public GameObject prefabExplosion;
+    public GameObject countGems;
+    private TextMesh count;
+    public static int countNumber = 0;
+    public static int countGemsinGame = 0;
 
 
     void Start()
     {
         rbd = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        count = countGems.GetComponent<TextMesh>();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        transform.parent = collision.transform;
-        chao = true;
-        
+        if (collision.gameObject.name == "colisores") {
+            transform.parent = collision.transform;
+            chao = true;
+        }
+
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.name == "door")
+        {
+            if(countNumber == countGemsinGame)
+            {
+                SceneManager.LoadScene("finalGame");
+            }
+        }
     }
 
-    //private void OnCollisionExit2D(Collision2D collision)
-    //{
-  
-        
-    //}
+
+
     void Update()
     {
+        count.text = countNumber + "/" + countGemsinGame;
 
         float x = Input.GetAxis("Horizontal");
         bool y = Input.GetKey(KeyCode.S);
@@ -92,24 +108,44 @@ public class player_controller : MonoBehaviour
 
         RaycastHit2D hit;
         RaycastHit2D hitGround;
-        RaycastHit2D hitGem;
+        RaycastHit2D hitCoin;
 
-        hit = Physics2D.Raycast(transform.position, -transform.up, 0.5f, enemyMask);
+        hit = Physics2D.Raycast(transform.position, -transform.up, 1f, enemyMask);
         if(hit.collider != null)
         {
             Destroy(hit.collider.gameObject);
             Instantiate(prefabExplosion, new Vector2(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y), Quaternion.identity) ;
         }
-        hitGround = Physics2D.Raycast(transform.position, -transform.up, 0.4f, groundMask);
+        hitGround = Physics2D.Raycast(transform.position, -transform.up, 0.8f, groundMask);
         if (hitGround.collider == null)
         {
             transform.parent = null;
             chao = false;
         }
-        hitGem = Physics2D.Raycast(transform.position, transform.right, 0.3f, gemMask);
-        if (hitGem.collider != null)
+        hitGround = Physics2D.Raycast(transform.position, transform.right, 0.1f, groundMask);
+        if (hitGround.collider != null)
         {
-            Destroy(hitGem.collider.gameObject);
+            chao = false;
+            rbd.velocity = new Vector2(x , -50);
         }
+        hitGround = Physics2D.Raycast(transform.position, -transform.right, 0.1f, groundMask);
+        if (hitGround.collider != null)
+        {
+            chao = false;
+            rbd.velocity = new Vector2(x, -50);
+        }
+        hitCoin = Physics2D.Raycast(transform.position, -transform.up, 0.5f, gemMask);
+        if (hitCoin.collider != null)
+        {
+            Destroy(hitCoin.collider.gameObject);
+            countNumber += 1;
+        }
+        hitCoin = Physics2D.Raycast(transform.position, -transform.right, 0.5f, gemMask);
+        if (hitCoin.collider != null)
+        {
+            Destroy(hitCoin.collider.gameObject);
+            countNumber += 1;
+        }
+      
     }
 }

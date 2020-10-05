@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class enemy_controller : MonoBehaviour
 {
@@ -9,14 +10,12 @@ public class enemy_controller : MonoBehaviour
     public LayerMask mask;
     public LayerMask playerMask;
     public float distancia = 5;
-    // Start is called before the first frame update
     void Start()
     {
         rbd = GetComponent<Rigidbody2D>();
        
     }
 
-    // Update is called once per frame
     void Update()
     {
         rbd.velocity = new Vector2(velocity, 0);
@@ -35,11 +34,25 @@ public class enemy_controller : MonoBehaviour
         if (hitPlayer.collider != null)
         {
             Destroy(hitPlayer.collider.gameObject);
+            SceneManager.LoadScene("game_over");
+            player_controller.countNumber = 0;
+            player_controller.countGemsinGame = 0;
         }
         hitPlayer = Physics2D.Raycast(transform.position, transform.right, 0.5f, playerMask);
         if (hitPlayer.collider != null)
         {
             Destroy(hitPlayer.collider.gameObject);
+            SceneManager.LoadScene("game_over");
+            player_controller.countNumber = 0;
+            player_controller.countGemsinGame = 0;
+        }
+        hitPlayer = Physics2D.Raycast(transform.position, transform.up, 0.5f, playerMask);
+        if (hitPlayer.collider != null)
+        {
+            Destroy(hitPlayer.collider.gameObject);
+            SceneManager.LoadScene("game_over");
+            player_controller.countNumber = 0;
+            player_controller.countGemsinGame = 0;
         }
     }
 }
