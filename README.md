@@ -4,7 +4,7 @@
 ## 🏃First Platform 2D Game
 It was a great experience. I learned about the 2D collisions, simple physics around the game, how to use tileMaps and a bit of Raycast used to kill the enemies.
 
-![MyGif](https://j.gifs.com/vl3rrr.gif)
+![MyGif](https://j.gifs.com/wV3vNm.gif)
 
 ## 🎯Goals
 - 💎 `GET GEMs`
